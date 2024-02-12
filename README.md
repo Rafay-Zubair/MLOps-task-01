@@ -15,3 +15,8 @@ Alternatively, this can also be done in one step by `git checkout -b developer-1
 ## making our developer branch remote
 `git push origin developer-1`
 
+## pushing changes to remote
+`git push`
+
+## merge changes to dev branch
+This command will be run in dev branch `git merge developer-1`
