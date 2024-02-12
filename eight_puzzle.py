@@ -40,7 +40,7 @@ def child_node(node, action):
         child['state'][i][j], child['state'][i][j+1] = child['state'][i][j+1], child['state'][i][j]
     return child
 
-def goal_test(puzzle):
+def goal_test(puzzle, goal_state):
     return puzzle == goal_state
 
 def printPuzzle(puzzle):
@@ -79,3 +79,30 @@ def manhatten_distance(puzzle):
             if puzzle[row][col] != 0:
                 dist += distance(row, col, puzzle[row][col]-1)
     return dist
+
+def heuristic_search(puzzle, goal_state):
+    frontier = PriorityQueue()
+    explored = list()
+    steps = 0
+
+    node = { 'state': copy.deepcopy(puzzle) }
+
+    frontier.put((0, copy.deepcopy(node['state'])))
+
+    while True:
+        if frontier.empty():
+            return None, 0
+
+        priority, node = frontier.get()
+        steps += 1
+        
+        if goal_test(node, goal_state):
+            return node, steps
+        explored.append(copy.deepcopy(node))
+
+        for action in actions(node):
+            child = child_node(copy.deepcopy(node), action)
+            if child['state'] not in explored:
+                priority = int(manhatten_distance(child['state']))
+                frontier.put((priority, copy.deepcopy(child['state'])))
+
